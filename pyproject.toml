@@ -41,8 +41,8 @@ BugTracker = "https://github.com/THEGOLDENPRO/library-template/issues"
 version = { attr = "library.__version__" }
 
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["library"]
+[tool.setuptools.packages.find]
+include = ["library*"]

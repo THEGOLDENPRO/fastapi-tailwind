@@ -1,7 +1,11 @@
 <div align="center">
 
-  # Python Library Template
+  # 🐍 Snakelings
 
-  <sub>Template I use for creating python libraries.</sub>
+  <sub>Learn python the right way. By actually writing and solving code!</sub>
 
 </div>
+
+<br>
+
+> readme soon...

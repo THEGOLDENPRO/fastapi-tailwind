@@ -1,6 +1,6 @@
 [project]
-name = "snakelings"
-description = "🐍 A collection of small exercises to assist beginners at reading and writing Python code."
+name = "library"
+description = "An amazing library, whooo hooo!"
 authors = [
     {name = "Goldy", email = "goldy@devgoldy.xyz"}
 ]
@@ -8,8 +8,7 @@ readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
 keywords = [
-    "python exercises",
-    "python beginners"
+    "amazing library"
 ]
 classifiers = [
 	'Operating System :: Microsoft :: Windows :: Windows 11',
@@ -19,10 +18,12 @@ classifiers = [
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
-	'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
+	'Programming Language :: Python :: 3.11'
 ]
-dependencies = []
+dependencies = [
+    "requests",
+    "importlib-metadata; python_version<'3.8'"
+]
 
 dynamic = ["version"]
 
@@ -33,15 +34,15 @@ dev = [
 ]
 
 [project.urls]
-GitHub = "https://github.com/THEGOLDENPRO/snakelings"
-BugTracker = "https://github.com/THEGOLDENPRO/snakelings/issues"
+GitHub = "https://github.com/THEGOLDENPRO/library-template"
+BugTracker = "https://github.com/THEGOLDENPRO/library-template/issues"
 
 [tool.setuptools.dynamic]
-version = { attr = "snakelings.__version__" }
+version = { attr = "library.__version__" }
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["snakelings*"]
+include = ["library*"]

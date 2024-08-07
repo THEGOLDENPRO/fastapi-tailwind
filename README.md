@@ -1,7 +1,7 @@
 <div align="center">
 
-  # 🏮 little-ruby
+  # Python Library Template
 
-  <sub>Display your music status in your Linux terminal.</sub>
+  <sub>Template I use for creating python libraries.</sub>
 
 </div>

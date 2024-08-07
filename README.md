@@ -2,6 +2,6 @@
 
   # 🏮 little-ruby
 
-  <sub>Little script that displays your music status in your Linux terminal.</sub>
+  <sub>Display your music status in your Linux terminal.</sub>
 
 </div>

@@ -1,6 +1,6 @@
 [project]
 name = "little-ruby"
-description = "Little script that displays your music status in your Linux terminal."
+description = "Display your music status in your Linux terminal."
 authors = [
     {name = "Goldy", email = "goldy@devgoldy.xyz"}
 ]
@@ -25,10 +25,7 @@ classifiers = [
 dependencies = [
     "typer",
     "pytermgui",
-    "python-mpd2",
-    "dasbus",
-    "PyGObject",
-    "PyGObject-stubs"
+    "python-mpd2"
 ]
 
 dynamic = ["version"]

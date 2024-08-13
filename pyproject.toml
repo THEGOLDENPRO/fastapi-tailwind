@@ -1,6 +1,6 @@
 [project]
-name = "library"
-description = "An amazing library, whooo hooo!"
+name = "fastapi-tailwind"
+description = "✨ TailwindCSS middleware for 🔥 FastAPI."
 authors = [
     {name = "Goldy", email = "goldy@devgoldy.xyz"}
 ]
@@ -8,7 +8,10 @@ readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
 keywords = [
-    "amazing library"
+    "tailwindcss",
+    "tailwind",
+    "fastapi",
+    "fastapi middleware"
 ]
 classifiers = [
 	'Operating System :: Microsoft :: Windows :: Windows 11',
@@ -18,11 +21,11 @@ classifiers = [
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
-	'Programming Language :: Python :: 3.11'
+	'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
 ]
 dependencies = [
-    "requests",
-    "importlib-metadata; python_version<'3.8'"
+    "fastapi"
 ]
 
 dynamic = ["version"]
@@ -30,19 +33,20 @@ dynamic = ["version"]
 [project.optional-dependencies]
 dev = [
     "ruff",
-    "build"
+    "build",
+    "requests"
 ]
 
 [project.urls]
-GitHub = "https://github.com/THEGOLDENPRO/library-template"
-BugTracker = "https://github.com/THEGOLDENPRO/library-template/issues"
+GitHub = "https://github.com/THEGOLDENPRO/fastapi-tailwind"
+BugTracker = "https://github.com/THEGOLDENPRO/fastapi-tailwind/issues"
 
 [tool.setuptools.dynamic]
-version = { attr = "library.__version__" }
+version = { attr = "fastapi_tailwind.__version__" }
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["library*"]
+include = ["fastapi_tailwind*"]

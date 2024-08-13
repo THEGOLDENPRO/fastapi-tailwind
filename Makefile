@@ -10,7 +10,7 @@ install:
 	${PIP} install . -U
 
 install-editable:
-	${PIP} install -e . --config-settings editable_mode=compat
+	${PIP} install -e .[dev] --config-settings editable_mode=compat
 
 test:
 	ruff .

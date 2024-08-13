@@ -1,7 +1,7 @@
 """
-✨ TailwindCSS middleware for 🔥 FastAPI.
+✨ TailwindCSS support for 🔥 FastAPI.
 """
 
-from .middleware import *
+from .lifespan import *
 
 __version__ = "1.0.0"

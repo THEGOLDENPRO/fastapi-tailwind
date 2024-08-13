@@ -1,7 +1,7 @@
 <div align="center">
 
-  # Python Library Template
+  # ✨🔥 fastapi-tailwind
 
-  <sub>Template I use for creating python libraries.</sub>
+  <sub>Quick and simple TailwindCSS support for FastAPI, NodeJS free!</sub>
 
 </div>

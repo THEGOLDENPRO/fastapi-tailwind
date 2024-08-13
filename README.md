@@ -2,6 +2,6 @@
 
   # ✨🔥 fastapi-tailwind
 
-  <sub>Quick and simple TailwindCSS support for FastAPI, NodeJS free!</sub>
+  <sub>Quick and simple TailwindCSS support for FastAPI, **NodeJS free!**</sub>
 
 </div>

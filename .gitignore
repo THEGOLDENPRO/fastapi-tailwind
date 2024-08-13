@@ -2,3 +2,4 @@ __pycache__
 env
 build
 *.egg-info
+output.css

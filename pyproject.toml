@@ -1,6 +1,6 @@
 [project]
 name = "fastapi-tailwind"
-description = "✨ TailwindCSS middleware for 🔥 FastAPI."
+description = "✨ TailwindCSS support for 🔥 FastAPI."
 authors = [
     {name = "Goldy", email = "goldy@devgoldy.xyz"}
 ]
@@ -25,7 +25,8 @@ classifiers = [
     'Programming Language :: Python :: 3.12',
 ]
 dependencies = [
-    "fastapi"
+    "fastapi",
+    "typer"
 ]
 
 dynamic = ["version"]
@@ -50,3 +51,9 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["fastapi_tailwind*"]
+
+[project.scripts]
+fastapi-tailwind-init = "fastapi_tailwind.__main__:app"
+
+[tool.setuptools.package-data]
+"fastapi_tailwind" = ["binaries"]

@@ -1,5 +1,3 @@
-import os
-import shutil
 import requests
 from pathlib import Path
 
@@ -15,6 +13,7 @@ if binaries_folder_path.exists():
 else:
     binaries_folder_path.mkdir()
 
+# Get latest tag version.
 tag_version = requests.get(f"https://api.github.com/repos/{REPO_ID}/tags").json()[0]["name"]
 
 binary_codenames = [
@@ -27,14 +26,20 @@ binary_codenames = [
     "tailwindcss-windows-x64.exe"
 ]
 
+info_file = binaries_folder_path.joinpath("info.txt").open("w")
+info_file.write(f"""
+version: {tag_version}
+""")
+info_file.close()
+
 for bin_codename in binary_codenames:
-    request = requests.get(
-        f"https://github.com/{REPO_ID}/releases/download/latest"
-    )
+    url = f"https://github.com/{REPO_ID}/releases/download/{tag_version}/{bin_codename}"
 
-    bin_name, extension = os.path.splitext(bin_codename)
+    print(f"Requesting --> {url}")
+    request = requests.get(url)
 
-    file = binaries_folder_path.joinpath(f"{bin_name}-{tag_version}{extension}").open("wb")
+    print(f"Writing --> {bin_codename}\n")
+    file = binaries_folder_path.joinpath(bin_codename).open("wb")
 
     file.write(request.content)
 

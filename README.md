@@ -71,7 +71,7 @@ app.mount("/static", static_files, name = "static")
 ```sh
 mkdir ./static
 ```
-4. Generate `tailwind.config.js`, then [configure it](https://tailwindcss.com/docs/configuration) appripately.
+4. Generate `tailwind.config.js`, then [configure it](https://tailwindcss.com/docs/configuration) appropriately.
 ```sh
 fastapi-tailwind-init
 ```

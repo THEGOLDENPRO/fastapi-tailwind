@@ -56,4 +56,4 @@ include = ["fastapi_tailwind*"]
 fastapi-tailwind-init = "fastapi_tailwind.__main__:app"
 
 [tool.setuptools.package-data]
-"fastapi_tailwind" = ["binaries"]
+"fastapi_tailwind" = ["binaries/*"]

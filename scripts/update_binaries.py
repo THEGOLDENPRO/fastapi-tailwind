@@ -27,9 +27,7 @@ binary_codenames = [
 ]
 
 info_file = binaries_folder_path.joinpath("info.txt").open("w")
-info_file.write(f"""
-version: {tag_version}
-""")
+info_file.write(f"""version: {tag_version}""")
 info_file.close()
 
 for bin_codename in binary_codenames:

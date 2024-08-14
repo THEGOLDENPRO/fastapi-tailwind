@@ -2,11 +2,13 @@
 
   # ✨ 🔥 fastapi-tailwind
 
-  <sub>Quick and simple TailwindCSS support for FastAPI, **NodeJS free!**</sub>
+  <sub>Streamlined approach to adding TailwindCSS to FastAPI **without** NodeJS.</sub>
+
+  <img src="./assets/heart_banner_cropped.png">
 
 </div>
 
-# How to get started!
+## How to add?
 > [!NOTE]
 > These instructions assume you have a somewhat intermediate understanding of FastAPI and that you've used TailwindCSS before (if you haven't be sure to read the documentation I link in tailwind stages) as I may assume some things.
 

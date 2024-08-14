@@ -16,6 +16,7 @@
 ```sh
 pip install git+https://github.com/THEGOLDENPRO/fastapi-tailwind
 ```
+> via ssh: `pip install git+ssh://git@github.com/THEGOLDENPRO/fastapi-tailwind.git`
 2. Edit your FastAPI APP.
 
 Before:

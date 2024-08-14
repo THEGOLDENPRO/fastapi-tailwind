@@ -8,6 +8,9 @@
 
 </div>
 
+> [!WARNING]
+> Currently in testing phase so expect bugs but do report them please. 🙏
+
 ## How to add?
 > [!NOTE]
 > These instructions assume you have a somewhat intermediate understanding of FastAPI and that you've used TailwindCSS before (if you haven't be sure to read the documentation I link in tailwind stages) as I may assume some things.

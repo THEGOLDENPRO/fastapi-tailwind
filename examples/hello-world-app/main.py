@@ -9,7 +9,7 @@ static_files = StaticFiles(directory = "static")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    process = tailwind.watch(static_files.directory + "/output.css")
+    process = tailwind.compile(static_files.directory + "/output.css")
 
     yield
 

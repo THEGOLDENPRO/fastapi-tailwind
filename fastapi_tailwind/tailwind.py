@@ -4,9 +4,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Literal, Optional, Any
 
-    from fastapi import FastAPI
-
 import os
+import sys
 import logging
 import platform
 from pathlib import Path
@@ -15,16 +14,17 @@ from subprocess import Popen
 from .errors import OSNotSupported
 
 __all__ = (
-    "watch"
+    "compile"
 )
 
 logger = logging.getLogger(__name__)
 
 binaries_path = Path(__file__).parent.joinpath("binaries")
 
-def watch(
+def compile(
     output_stylesheet_path: str,
-    tailwind_stylesheet_path: Optional[str] = None
+    tailwind_stylesheet_path: Optional[str] = None,
+    watch: Optional[bool] = None,
 ) -> Popen:
     bin_path = get_tailwind_binary_path()
 
@@ -38,10 +38,17 @@ def watch(
 
     args = [
         str(bin_path.absolute()),
-        "--watch",
         "-o",
         output_stylesheet,
     ]
+
+    # Set watch to true if in dev mode.
+    if watch is None and ("--reload" in sys.argv or "dev" == sys.argv[1]):
+        logger.debug("Setting watch to True as reload / development mode was detected...")
+        watch = True
+
+    if watch is True:
+        args.append("--watch")
 
     if tailwind_stylesheet_path is not None:
         tailwind_stylesheet_path: Path = Path(tailwind_stylesheet_path)
@@ -53,7 +60,7 @@ def watch(
 
         args.extend(
             [
-                "-i", str(tailwind_stylesheet_path.absolute())
+                "-i", tailwind_stylesheet_path.absolute()
             ]
         )
 

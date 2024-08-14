@@ -2,7 +2,7 @@
 
   # ✨ 🔥 fastapi-tailwind
 
-  <sub>Streamlined approach to adding TailwindCSS to FastAPI **without** NodeJS.</sub>
+  <sub>Streamlined approach for adding TailwindCSS to FastAPI **without** NodeJS.</sub>
 
   <img src="./assets/heart_banner_cropped.png">
 

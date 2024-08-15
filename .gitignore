@@ -4,3 +4,5 @@ build
 *.egg-info
 output.css
 dist
+.ruff_cache
+custom_build

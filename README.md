@@ -8,6 +8,9 @@
 
 </div>
 
+> [!WARNING]
+> Currently in testing phase so expect bugs but do report them please. 🙏
+
 ## How to add?
 > [!NOTE]
 > These instructions assume you have a somewhat intermediate understanding of FastAPI and that you've used TailwindCSS before (if you haven't be sure to read the documentation I link in tailwind stages) as I may assume some things.
@@ -16,6 +19,7 @@
 ```sh
 pip install git+https://github.com/THEGOLDENPRO/fastapi-tailwind
 ```
+> via ssh: `pip install git+ssh://git@github.com/THEGOLDENPRO/fastapi-tailwind.git`
 2. Edit your FastAPI APP.
 
 Before:

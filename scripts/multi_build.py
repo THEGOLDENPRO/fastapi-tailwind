@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     for bin_path in list(temp_binaries_folder_path.iterdir()):
 
-        if not bin_path.name in BINARY_CODENAMES:
+        if bin_path.name not in BINARY_CODENAMES:
             logger.debug(f"Ignoring '{bin_path}' as it is not a tailwind binary...")
             continue
 

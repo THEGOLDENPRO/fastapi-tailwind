@@ -17,7 +17,7 @@ from update_binaries import BINARY_CODENAMES
 
 TAILWIND_PLATFORM_TO_PYPI_PLATFORM: Dict[str, Tuple[str, Dict[str, str]]] = {
     "linux": (
-        "manylinux1", 
+        "manylinux2014", 
         {
             "x64": "x86_64",
             "arm64": "aarch64",

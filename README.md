@@ -23,7 +23,7 @@
 
 1. Install the pypi package.
 ```sh
-pip install git+https://github.com/THEGOLDENPRO/fastapi-tailwind
+pip install fastapi-tailwind
 ```
 > via ssh: `pip install git+ssh://git@github.com/THEGOLDENPRO/fastapi-tailwind.git`
 2. Edit your FastAPI APP.

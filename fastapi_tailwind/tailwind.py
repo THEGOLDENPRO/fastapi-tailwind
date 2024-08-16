@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from typing import Literal, Optional, Any
+    from typing import Literal, Optional, Any, Dict
 
 import os
 import sys
@@ -16,6 +16,13 @@ from .errors import OSNotSupported
 __all__ = (
     "compile"
 )
+
+MACHINE_TYPE_TO_TAILWIND_TYPE: Dict[str, str] = {
+    "x86_64": "x64",
+    "amd64": "x64",
+    "aarch64": "arm64",
+    "armv7l": "armv7"
+}
 
 logger = logging.getLogger(__name__)
 
@@ -74,10 +81,9 @@ def get_tailwind_binary_path() -> Optional[Path]:
     path: Optional[Path] = None 
     cpu_architecture = platform.machine()
 
-    if cpu_architecture == "x86_64":
-        cpu_architecture = "x64" # tailwind bin is tagged with x64.
+    cpu_architecture = MACHINE_TYPE_TO_TAILWIND_TYPE.get(cpu_architecture, cpu_architecture)
 
-    elif cpu_architecture == "i386": # tailwind doesn't support i386 to my understanding, correct me if I'm wrong.
+    if cpu_architecture == "i386": # tailwind doesn't support i386 to my understanding, correct me if I'm wrong.
         return None
 
     operating_system: Literal["Windows", "Linux", "Darwin"] | Any = platform.system()

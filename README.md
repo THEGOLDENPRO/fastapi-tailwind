@@ -11,6 +11,12 @@
 > [!WARNING]
 > Currently in testing phase so expect bugs but do report them please. 🙏
 
+## Features ✨
+- [x] Auto watch when in dev mode. 🔎
+- [x] Doesn't require NodeJS and NPM. 🫧🪥
+- [x] Seemless integration into the FastAPI codebase. 🥂
+- [ ] GZIP automatically configured to [compress TailwindCSS](https://v1.tailwindcss.com/docs/controlling-file-size). ⚡
+
 ## How to add?
 > [!NOTE]
 > These instructions assume you have a somewhat intermediate understanding of FastAPI and that you've used TailwindCSS before (if you haven't be sure to read the documentation I link in tailwind stages) as I may assume some things.

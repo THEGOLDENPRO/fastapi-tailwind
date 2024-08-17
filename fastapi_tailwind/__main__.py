@@ -4,7 +4,7 @@ from typing import Optional, List
 import typer
 import subprocess
 
-from .tailwind import get_tailwind_binary_path
+from .binary import get_tailwind_binary_path
 
 app = typer.Typer(
     pretty_exceptions_enable = False, 

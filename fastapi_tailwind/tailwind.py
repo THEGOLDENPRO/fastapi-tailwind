@@ -22,6 +22,9 @@ def compile(
     output_stylesheet_path: str,
     tailwind_stylesheet_path: Optional[str] = None,
     watch: Optional[bool] = None,
+    minify: bool = False,
+    poll: bool = False,
+    autoprefixer = True
 ) -> Popen:
     bin_path = get_tailwind_binary_path()
 
@@ -47,6 +50,15 @@ def compile(
 
     if watch is True:
         args.append("--watch")
+
+    if minify is True:
+        args.append("--minify")
+
+    if poll is True:
+        args.append("--poll")
+
+    if autoprefixer is False:
+        args.append("--no-autoprefixer")
 
     if tailwind_stylesheet_path is not None:
         tailwind_stylesheet_path: Path = Path(tailwind_stylesheet_path)

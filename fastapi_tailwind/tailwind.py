@@ -26,6 +26,17 @@ def compile(
     poll: bool = False,
     autoprefixer = True
 ) -> Popen:
+    """
+    Compiles your TailwindCSS to the output css path you set.
+
+    Params:
+        output_stylesheet_path: The path to output your TailwindCSS stylesheet file (css). It typically should be placed where ever your fastapi static dir is.
+        tailwind_stylesheet_path: Path to the TailwindCSS input stylesheet file. (e.g input.css, style.css)
+        watch: Let TailwindCSS watch for file changes and rebuild if needed. (`True` by default in FastAPI dev mode)
+        minify: Minify the TailwindCSS output.
+        poll: Tell TailwindCSS to use polling instead of filesystem events when watching.
+        autoprefixer: Disable / enable TailwindCSS autoprefixer. (`True` by default)
+    """
     bin_path = get_tailwind_binary_path()
 
     if bin_path is None: # What OS would you even be on for this to even occur. 💀

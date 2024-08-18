@@ -124,3 +124,18 @@ if __name__ == "__main__":
         wheel_file_path = wheel_file_path.rename(platform_dist_path.joinpath(new_name))
 
         shutil.move(wheel_file_path, dist_folder_path)
+
+    logger.debug("Duplicating manylinux wheels to make musllinux wheels...")
+
+    for wheel_path in dist_folder_path.iterdir():
+
+        if not "manylinux2014" in wheel_path.stem:
+            continue
+
+        new_name = f"{wheel_path.stem.replace('-manylinux2014', '-musllinux_0_5')}.whl"
+
+        new_wheel_path = dist_folder_path.joinpath(new_name)
+
+        print(">>", new_wheel_path)
+
+        shutil.copy(wheel_path, new_wheel_path)

@@ -132,7 +132,7 @@ if __name__ == "__main__":
         if not "manylinux2014" in wheel_path.stem:
             continue
 
-        new_name = f"{wheel_path.stem.replace('-manylinux2014', '-musllinux_0_5')}.whl"
+        new_name = f"{wheel_path.stem.replace('-manylinux2014', '-musllinux_1_2')}.whl"
 
         new_wheel_path = dist_folder_path.joinpath(new_name)
 

@@ -15,7 +15,7 @@
 - [x] Auto watch when in dev mode. 🔎
 - [x] Doesn't require NodeJS and NPM. 🫧🪥
 - [x] Seemless integration into the FastAPI codebase. 🥂
-- [ ] GZIP automatically configured to [compress TailwindCSS](https://v1.tailwindcss.com/docs/controlling-file-size). ⚡
+- [ ] GZIP automatically configured to [compress TailwindCSS](https://v1.tailwindcss.com/docs/controlling-file-size) out of the box. ⚡
 
 ## How to add?
 > [!NOTE]

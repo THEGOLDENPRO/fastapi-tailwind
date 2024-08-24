@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 import sys
 import shutil
 import logging
+import zipfile
 from pathlib import Path
 from subprocess import Popen
 
@@ -139,3 +140,6 @@ if __name__ == "__main__":
         print(">>", new_wheel_path)
 
         shutil.copy(wheel_path, new_wheel_path)
+
+        with zipfile.ZipFile(new_wheel_path, mode = "a") as archive:
+            archive.writestr("owo.txt", f"Ignore me pwease. ({new_name})")

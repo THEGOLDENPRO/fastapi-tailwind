@@ -20,7 +20,7 @@ binaries_path = Path(__file__).parent.joinpath("binaries")
 
 def get_tailwind_binary_path() -> Optional[Path]:
     path: Optional[Path] = None 
-    cpu_architecture = platform.machine()
+    cpu_architecture = platform.machine().lower()
 
     cpu_architecture = MACHINE_TYPE_TO_TAILWIND_TYPE.get(cpu_architecture, cpu_architecture)
 

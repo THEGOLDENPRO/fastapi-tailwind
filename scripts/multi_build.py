@@ -32,7 +32,7 @@ TAILWIND_PLATFORM_TO_PYPI_PLATFORM: Dict[str, Tuple[str, Dict[str, str]]] = {
         }
     ),
     "macos": (
-        "macosx_11_0",
+        "macosx_10_9",
         {
             "x64": "x86_64"
         }

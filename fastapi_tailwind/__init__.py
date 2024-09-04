@@ -2,4 +2,4 @@
 ✨ TailwindCSS support for 🔥 FastAPI.
 """
 
-__version__ = "1.0.1alpha5"
+__version__ = "1.0.1alpha6"

@@ -38,7 +38,9 @@ def get_tailwind_binary_path() -> Optional[Path]:
     elif operating_system == "Linux":
         path = binaries_path.joinpath(f"tailwindcss-linux-{cpu_architecture}")
 
-        # On linux the binary is required to be executable.
+    if operating_system == "Linux" or operating_system == "Darwin":
+        # On linux and mac the binary is required to be executable.
+
         if path.exists():
             is_executable = os.access(path, os.X_OK)
 

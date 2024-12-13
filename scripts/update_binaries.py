@@ -16,6 +16,8 @@ BINARY_CODENAMES = [
     "tailwindcss-windows-x64.exe"
 ]
 
+TAILWIND_VERSION = "3.4.16"
+
 if __name__ == "__main__":
     binaries_folder_path = Path("./fastapi_tailwind/binaries")
 
@@ -28,7 +30,8 @@ if __name__ == "__main__":
         binaries_folder_path.mkdir()
 
     # Get latest tag version.
-    tag_version = requests.get(f"https://api.github.com/repos/{REPO_ID}/tags").json()[0]["name"]
+    # tag_version = requests.get(f"https://api.github.com/repos/{REPO_ID}/tags").json()[0]["name"]
+    tag_version = f"v{TAILWIND_VERSION}"
 
     info_file = binaries_folder_path.joinpath("info.txt").open("w")
     info_file.write(f"""version: {tag_version}""")

@@ -11,6 +11,10 @@
 > [!WARNING]
 > Currently in testing phase so expect bugs but do report them please. 🙏
 
+> [!NOTE]
+> This library currently only ships with the **`v3`** release of tailwindcss but I'll soon update it to **`v4`**.
+> You can track the progress with the [#7](https://github.com/THEGOLDENPRO/fastapi-tailwind/issues/7) issue.
+
 ## Features ✨
 - [x] Auto watch when in dev mode. 🔎
 - [x] Doesn't require NodeJS and NPM. 🫧🪥

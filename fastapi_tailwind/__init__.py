@@ -1,5 +1,5 @@
 """
-✨ TailwindCSS support for 🔥 FastAPI.
+✨ TailwindCSS V4 support for 🔥 FastAPI.
 """
 
-__version__ = "1.0.2beta1"
+__version__ = "1.1.0alpha1"

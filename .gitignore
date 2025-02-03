@@ -6,3 +6,4 @@ output.css
 dist
 .ruff_cache
 custom_build
+fastapi_tailwind/binaries/*

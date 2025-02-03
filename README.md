@@ -4,6 +4,10 @@
 
   <sub>Streamlined approach for adding TailwindCSS to FastAPI **without** NodeJS.</sub>
 
+  [![Pypi Version](https://img.shields.io/pypi/v/fastapi-tailwind?style=flat)](https://pypi.org/project/fastapi-tailwind/)
+  [![Python Versions](https://img.shields.io/pypi/dm/fastapi-tailwind?color=informational&label=pypi%20downloads)](https://pypi.org/project/fastapi-tailwind/)
+  [![Pypi Downloads](https://img.shields.io/pypi/pyversions/fastapi-tailwind?style=flat)](https://pypistats.org/packages/fastapi-tailwind)
+
   <img src="./assets/heart_banner_cropped.png">
 
 </div>

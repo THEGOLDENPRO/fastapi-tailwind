@@ -84,7 +84,7 @@ def index():
 app.mount("/static", static_files, name = "static")
 ```
 
-3. Make sure the `static` folder exists and create a `input.css` file ([in v4 this is now used instead of configuration](https://tailwindcss.com/docs/upgrade-guide)).
+3. Make sure the `static` folder exists and create a `input.css` file ([in v4 this is now used for configuration](https://tailwindcss.com/docs/upgrade-guide)).
 ```sh
 mkdir ./static
 touch input.css

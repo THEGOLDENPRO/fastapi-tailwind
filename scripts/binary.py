@@ -43,37 +43,45 @@ bin_stash_folder_path = Path("./binary_stash")
 library_bin_folder_path = Path("./fastapi_tailwind/binary")
 
 @app.command()
-def pull(bin_type: BinType, version: Optional[str] = None):
+def pull(bin_type: BinType, version: Optional[str] = None, force: bool = False):
+    bin_types_to_pull: List[BinType] = []
 
     if bin_type == BinType.ALL:
-        raise NotImplementedError("'pull all' is not a thing yet :)")
+        bin_types_to_pull = [x for x in BinType if not x == BinType.ALL]
+    else:
+        bin_types_to_pull = [bin_type]
 
     if version is None:
         version = TAILWIND_VERSION
 
-    _, (bin_codename, tag_version) = bin_name_generator(bin_type, version)
+    for bin_type in bin_types_to_pull:
+        bin_codename, tag_version = bin_name_generator(bin_type.value, version)
 
-    # TODO: move this code
-    url = f"https://github.com/{REPO_ID}/releases/download/{tag_version}/{bin_codename}"
+        destination_path = bin_stash_folder_path.joinpath(f"{bin_codename}-{tag_version}")
 
-    print(f"Requesting download from --> {url}")
-    request = requests.get(url)
+        if destination_path.exists() and force is False:
+            print(f"'{destination_path.name}' is already pulled, skipping...")
+            continue
 
-    if not request.status_code == 200:
-        print(f"Failed to download tailwind bin from '{url}': {request}")
-        raise typer.Exit(1)
+        # TODO: move this code
+        url = f"https://github.com/{REPO_ID}/releases/download/{tag_version}/{bin_codename}"
 
-    print(f"Writing --> {bin_codename}-{tag_version}\n")
+        print(f"Requesting download from --> {url}")
+        request = requests.get(url)
 
-    if not bin_stash_folder_path.exists():
-        bin_stash_folder_path.mkdir()
+        if not request.status_code == 200:
+            print(f"Failed to download tailwind bin from '{url}': {request}")
+            raise typer.Exit(1)
 
-    destination_path = bin_stash_folder_path.joinpath(f"{bin_codename}-{tag_version}")
+        print(f"Writing --> {destination_path}")
 
-    with destination_path.open("wb") as file:
-        file.write(request.content)
+        if not bin_stash_folder_path.exists():
+            bin_stash_folder_path.mkdir()
 
-    print(f"Pulled bin successfully. Stashed at '{destination_path}'.")
+        with destination_path.open("wb") as file:
+            file.write(request.content)
+
+        print(f"Pulled bin successfully!\n")
 
 @app.command()
 def select(bin_type: BinType, version: Optional[str] = None):
@@ -81,7 +89,7 @@ def select(bin_type: BinType, version: Optional[str] = None):
     if version is None:
         version = TAILWIND_VERSION
 
-    tailwind_bin_name, tag_version = bin_name_generator(bin_type, version)
+    tailwind_bin_name, tag_version = bin_name_generator(bin_type.value, version)
 
     binary_target_path = bin_stash_folder_path.joinpath(f"{tailwind_bin_name}-{tag_version}")
     binary_destination_path = library_bin_folder_path.joinpath(tailwind_bin_name) # yes, without tag version appended

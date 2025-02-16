@@ -6,4 +6,10 @@ output.css
 dist
 .ruff_cache
 custom_build
+binary_stash
+
+fastapi_tailwind/binary/*
+!fastapi_tailwind/binary/metadata.txt
+
+# old bin folder
 fastapi_tailwind/binaries/*

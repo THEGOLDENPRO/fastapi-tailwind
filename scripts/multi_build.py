@@ -14,7 +14,7 @@ import zipfile
 from pathlib import Path
 from subprocess import Popen
 
-from update_binaries import BINARY_CODENAMES
+from binary import BINARY_CODENAMES
 
 TAILWIND_PLATFORM_TO_PYPI_PLATFORM: Dict[str, Tuple[str, Dict[str, str]]] = {
     "linux": (

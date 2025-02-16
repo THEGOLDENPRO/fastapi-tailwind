@@ -11,7 +11,8 @@ keywords = [
     "tailwindcss",
     "tailwind",
     "fastapi",
-    "fastapi middleware"
+    "fastapi middleware",
+    "tailwindcss v4"
 ]
 classifiers = [
 	"Operating System :: Microsoft :: Windows :: Windows 11",
@@ -25,9 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = [
-    "typer"
-]
+dependencies = []
 
 dynamic = ["version"]
 
@@ -36,7 +35,8 @@ dev = [
     "ruff",
     "build",
     "fastapi[standard]",
-    "requests"
+    "requests",
+    "typer"
 ]
 
 [project.urls]

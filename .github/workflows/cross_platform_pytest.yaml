@@ -9,8 +9,9 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: ubuntu-latest
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        architecture: ["x64", "arm64"]
 
     steps:
     - uses: actions/checkout@v4
@@ -19,24 +20,15 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-        architecture: "x64"
+        architecture: ${{ matrix.architecture }}
 
     - name: Install dependencies
       run: pip install -e .[dev] --config-settings editable_mode=compat
 
     - name: Install tailwind binary
       run: |
-        OS_NAME="${{ matrix.os }}"
-        OS_NAME="${OS_NAME%-latest}"
-
-        case "$OS_NAME" in
-          ubuntu) OS_NAME="linux" ;;
-        esac
-
-        echo "OS_NAME --> $OS_NAME" # debug debug debug debug debug debug debug debug debug debug debug debug
-
-        python scripts/binary.py pull $OS_NAME-x64
-        python scripts/binary.py select $OS_NAME-x64
+        python scripts/binary.py pull "linux-${{ matrix.architecture }}"
+        python scripts/binary.py select "linux-${{ matrix.architecture }}"
 
     - name: Run ruff and pytest
       run: |

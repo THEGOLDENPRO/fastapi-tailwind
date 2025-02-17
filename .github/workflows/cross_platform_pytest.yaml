@@ -1,4 +1,4 @@
-name: Pytest (Cross platform, but x64 only)
+name: Pytest (Cross platform)
 
 on: [push, workflow_dispatch]
 

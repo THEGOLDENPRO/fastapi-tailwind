@@ -4,18 +4,17 @@ on: [push, workflow_dispatch]
 
 jobs:
 
-  build:
-    runs-on: ${{ matrix.os }}
+  linux_test:
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }} for ${{ matrix.os }}
+    - name: Set up Python ${{ matrix.python-version }} for Linux
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
@@ -25,17 +24,64 @@ jobs:
 
     - name: Install tailwind binary
       run: |
-        OS_NAME="${{ matrix.os }}"
-        OS_NAME="${OS_NAME%-latest}"
+        python scripts/binary.py pull linux-x64
+        python scripts/binary.py select linux-x64
 
-        case "$OS_NAME" in
-          ubuntu) OS_NAME="linux" ;;
-        esac
+    - name: Run ruff and pytest
+      run: |
+        ruff check .
+        pytest -v
 
-        echo "OS_NAME --> $OS_NAME" # debug debug debug debug debug debug debug debug debug debug debug debug
+  macos_test:
+    runs-on: macos-latest
 
-        python scripts/binary.py pull $OS_NAME-${{ setup-python.architecture }}
-        python scripts/binary.py select $OS_NAME-${{ setup-python.architecture }}
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }} for MacOS
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -e .[dev] --config-settings editable_mode=compat
+
+    - name: Install tailwind binary
+      run: |
+        python scripts/binary.py pull macos-arm64
+        python scripts/binary.py select macos-arm64
+
+    - name: Run ruff and pytest
+      run: |
+        ruff check .
+        pytest -v
+
+  windows_test:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }} for Windows
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -e .[dev] --config-settings editable_mode=compat
+
+    - name: Install tailwind binary
+      run: |
+        python scripts/binary.py pull windows-x64
+        python scripts/binary.py select windows-x64
 
     - name: Run ruff and pytest
       run: |

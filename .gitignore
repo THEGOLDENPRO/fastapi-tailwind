@@ -10,7 +10,7 @@ binary_stash
 .pytest_cache
 
 fastapi_tailwind/binary/*
-!fastapi_tailwind/binary/metadata.txt
+!fastapi_tailwind/binary/.gitkeep
 
 # old bin folder
 fastapi_tailwind/binaries/*

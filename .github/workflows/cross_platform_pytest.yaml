@@ -32,6 +32,8 @@ jobs:
           ubuntu) OS_NAME="linux" ;;
         esac
 
+        echo "OS_NAME --> $OS_NAME" # debug debug debug debug debug debug debug debug debug debug debug debug
+
         python scripts/binary.py pull $OS_NAME-x64
         python scripts/binary.py select $OS_NAME-x64
 

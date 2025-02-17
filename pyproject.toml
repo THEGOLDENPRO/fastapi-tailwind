@@ -56,3 +56,8 @@ include = ["fastapi_tailwind*"]
 
 [tool.setuptools.package-data]
 "fastapi_tailwind" = ["binary/*"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]

@@ -50,7 +50,7 @@ def compile(
 
     if bin_path is None:
         error_msg = "Tailwindcss either doesn't support your platform (e.g. operating system, CPU architecture) " \
-            "or the package was not package correctly. \n\nThese are the only supported binaries: https://github.com/tailwindlabs/tailwindcss/releases" \
+            "or the package was not packaged correctly. \n\nThese are the only supported binaries: https://github.com/tailwindlabs/tailwindcss/releases" \
             "\nPlease report this if otherwise: https://github.com/THEGOLDENPRO/fastapi-tailwind/issues"
 
         raise BinaryNotFoundError(error_msg)

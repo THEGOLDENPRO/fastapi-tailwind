@@ -122,7 +122,7 @@ def select(bin_type: BinType, version: Optional[str] = None):
         logger.debug(f"Removing '{binary_file}'...")
         binary_file.unlink()
 
-    logger.debug("\nWriting metadata file...")
+    logger.debug("Writing metadata file...")
     write_bin_metadata(library_bin_folder_path, version)
 
     logger.debug(f"Copying tailwindcss bin to {binary_destination_path}...")

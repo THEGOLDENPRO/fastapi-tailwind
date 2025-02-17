@@ -31,6 +31,9 @@ def get_tailwind_binary_path() -> Optional[Path]:
 
     # TODO: before this step, let's check the binary checksum.
 
+    if path is None:
+        return path
+
     if operating_system == "Linux" or operating_system == "Darwin":
         # On linux and mac the binary is required to be made executable.
         #path: Path

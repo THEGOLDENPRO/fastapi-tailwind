@@ -38,6 +38,8 @@ class BinType(str, Enum):
     MACOS_X64 = "macos-x64"
     WINDOWS_X64 = "windows-x64"
 
+    ALL = "all"
+
     def platform_split(self) -> Tuple[str, str]:
         os, cpu_arch = self.value.split("-", 1)
 

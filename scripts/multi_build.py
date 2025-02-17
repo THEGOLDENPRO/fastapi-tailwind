@@ -60,7 +60,7 @@ def multi_build(target_version: Optional[str] = typer.Option(None, "--target-ver
         target_version = TAILWIND_VERSION
 
     if not bin_stash_folder_path.exists():
-        print(
+        logger.error(
             f"The '{bin_stash_folder_path}' stash path does not exist! " \
                 "Pull a binary before running a multi build: python scripts/binary.py pull linux-x64"
         )
@@ -90,7 +90,7 @@ def multi_build(target_version: Optional[str] = typer.Option(None, "--target-ver
 
         for enum_bin_type in BinType:
 
-            if enum_bin_type.value in "-".join(stashed_bin_path.name.split("-")[:-1]):
+            if enum_bin_type.value == "-".join(stashed_bin_path.name.split("-")[1:-1]).replace(".exe", ""):
                 bin_type = enum_bin_type
                 break
 

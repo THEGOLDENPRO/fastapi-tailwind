@@ -1,0 +1,89 @@
+name: Pytest (Cross platform)
+
+on: [push, workflow_dispatch]
+
+jobs:
+
+  linux_test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }} for Linux
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -e .[dev] --config-settings editable_mode=compat
+
+    - name: Install tailwind binary
+      run: |
+        python scripts/binary.py pull linux-x64
+        python scripts/binary.py select linux-x64
+
+    - name: Run ruff and pytest
+      run: |
+        ruff check .
+        pytest -v
+
+  macos_test:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }} for MacOS
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -e .[dev] --config-settings editable_mode=compat
+
+    - name: Install tailwind binary
+      run: |
+        python scripts/binary.py pull macos-arm64
+        python scripts/binary.py select macos-arm64
+
+    - name: Run ruff and pytest
+      run: |
+        ruff check .
+        pytest -v
+
+  windows_test:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }} for Windows
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: pip install -e .[dev] --config-settings editable_mode=compat
+
+    - name: Install tailwind binary
+      run: |
+        python scripts/binary.py pull windows-x64
+        python scripts/binary.py select windows-x64
+
+    - name: Run ruff and pytest
+      run: |
+        ruff check .
+        pytest -v

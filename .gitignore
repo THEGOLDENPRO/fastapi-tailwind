@@ -6,3 +6,11 @@ output.css
 dist
 .ruff_cache
 custom_build
+binary_stash
+.pytest_cache
+
+fastapi_tailwind/binary/*
+!fastapi_tailwind/binary/.gitkeep
+
+# old bin folder
+fastapi_tailwind/binaries/*

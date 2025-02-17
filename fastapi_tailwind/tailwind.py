@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 from subprocess import Popen
 
-from .errors import OSNotSupported
+from .errors import BinaryNotFoundError
 from .binary import get_tailwind_binary_path
 
 __all__ = (
@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 def compile(
     output_stylesheet_path: str,
     tailwind_stylesheet_path: Optional[str] = None,
+    binary_path: Optional[str] = None,
     watch: Optional[bool] = None,
     minify: bool = False,
     poll: bool = False,
@@ -32,19 +33,27 @@ def compile(
     Params:
         output_stylesheet_path: The path to output your TailwindCSS stylesheet file (css). It typically should be placed where ever your fastapi static dir is.
         tailwind_stylesheet_path: Path to the TailwindCSS input stylesheet file. (e.g input.css, style.css)
+        binary_path: If you would like to use your own tailwind binary, pass the path to it here and fastapi-tailwind will stop using it's own.
         watch: Let TailwindCSS watch for file changes and rebuild if needed. (`True` by default in FastAPI dev mode)
         minify: Minify the TailwindCSS output.
         poll: Tell TailwindCSS to use polling instead of filesystem events when watching.
         autoprefixer: Disable / enable TailwindCSS autoprefixer. (`True` by default)
+
+    Raises:
+        FileNotFoundError: Thrown when the specified tailwind stylesheet file is not found.
+        BinaryNotFoundError: Thrown when a tailwindcss binary packaged with the library cannot be found. This should normally **never** happen, unless the library is packaged incorrectly.
     """
     bin_path = get_tailwind_binary_path()
 
-    if bin_path is None: # What OS would you even be on for this to even occur. 💀
-        raise OSNotSupported(
-            "Tailwind either doesn't support this operating system or CPU architecture! " \
-                "These are the only supported binaries: https://github.com/tailwindlabs/tailwindcss/releases \n" \
-                    "If this is incorrect please report it here: https://github.com/THEGOLDENPRO/fastapi-tailwind/issues"
-        )
+    if binary_path is not None:
+        bin_path = Path(binary_path)
+
+    if bin_path is None:
+        error_msg = "Tailwindcss either doesn't support your platform (e.g. operating system, CPU architecture) " \
+            "or the package was not packaged correctly. \n\nThese are the only supported binaries: https://github.com/tailwindlabs/tailwindcss/releases" \
+            "\nPlease report this if otherwise: https://github.com/THEGOLDENPRO/fastapi-tailwind/issues"
+
+        raise BinaryNotFoundError(error_msg)
 
     output_stylesheet = Path(output_stylesheet_path)
 

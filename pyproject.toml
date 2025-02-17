@@ -11,7 +11,8 @@ keywords = [
     "tailwindcss",
     "tailwind",
     "fastapi",
-    "fastapi middleware"
+    "fastapi middleware",
+    "tailwindcss v4"
 ]
 classifiers = [
 	"Operating System :: Microsoft :: Windows :: Windows 11",
@@ -23,11 +24,9 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
 	"Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
-dependencies = [
-    "fastapi",
-    "typer"
-]
+dependencies = []
 
 dynamic = ["version"]
 
@@ -35,7 +34,10 @@ dynamic = ["version"]
 dev = [
     "ruff",
     "build",
-    "requests"
+    "fastapi[standard]",
+    "requests",
+    "typer",
+    "pytest"
 ]
 
 [project.urls]
@@ -52,8 +54,10 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 include = ["fastapi_tailwind*"]
 
-[project.scripts]
-fastapi-tailwind-init = "fastapi_tailwind.__main__:app"
-
 [tool.setuptools.package-data]
-"fastapi_tailwind" = ["binaries/*"]
+"fastapi_tailwind" = ["binary/*"]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]

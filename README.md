@@ -2,7 +2,7 @@
 
   # ✨ 🔥 fastapi-tailwind
 
-  <sub>Streamlined approach for adding TailwindCSS to FastAPI **without** NodeJS.</sub>
+  <sub>Streamlined approach for adding TailwindCSS V4 to FastAPI **without** NodeJS.</sub>
 
   [![Pypi Version](https://img.shields.io/pypi/v/fastapi-tailwind?style=flat)](https://pypi.org/project/fastapi-tailwind/)
   [![Python Versions](https://img.shields.io/pypi/dm/fastapi-tailwind?color=informational&label=pypi%20downloads)](https://pypistats.org/packages/fastapi-tailwind)
@@ -13,21 +13,19 @@
 </div>
 
 > [!WARNING]
-> Currently in testing phase so expect bugs but do report them please. 🙏
-
-> [!NOTE]
-> This library currently only ships with the **`v3`** release of tailwindcss but I'll soon update it to **`v4`**.
-> You can track the progress with the [#7](https://github.com/THEGOLDENPRO/fastapi-tailwind/issues/7) issue.
+> Currently in alpha phase so expect bugs but do report them please. 🙏
 
 ## Features ✨
 - [x] Auto watch when in dev mode. 🔎
 - [x] Doesn't require NodeJS and NPM. 🫧🪥
 - [x] Seemless integration into the FastAPI codebase. 🥂
-- [ ] GZIP automatically configured to [compress TailwindCSS](https://v1.tailwindcss.com/docs/controlling-file-size) out of the box. ⚡
+- [ ] GZIP automatically configured to [compress TailwindCSS](https://v2.tailwindcss.com/docs/controlling-file-size) out of the box. ⚡
 
 ## How to add?
 > [!NOTE]
-> These instructions assume you have a somewhat intermediate understanding of FastAPI and that you've used TailwindCSS before (if you haven't be sure to read the documentation I link in tailwind stages) as I may assume some things.
+> These instructions assume you already have a somewhat intermediate understanding of FastAPI and that you've used TailwindCSS before (if you haven't be sure to read the documentation pages I link below).
+>
+> If you're using Windows you can still replicate these commands via a file explorer.
 
 1. Install the pypi package.
 ```sh
@@ -86,15 +84,30 @@ def index():
 app.mount("/static", static_files, name = "static")
 ```
 
-3. Make sure the `static` folder exists.
+3. Make sure the `static` folder exists and create a `input.css` file ([in v4 this is now used for configuration](https://tailwindcss.com/docs/upgrade-guide)).
 ```sh
 mkdir ./static
+touch input.css
 ```
-4. Generate `tailwind.config.js`, then [configure it](https://tailwindcss.com/docs/configuration) appropriately.
+
+4. Open `input.css` and write `@import "tailwindcss;` in the file or just run this command:
 ```sh
-fastapi-tailwind-init
+echo '@import "tailwindcss";' > input.css
 ```
-5. Write your tailwind css in `index.html`.
+
+> ### VSCode TailwindCSS Intellisense FIX!
+> There is currently [a bug in the vscode tailwindcss extension](https://github.com/tailwindlabs/tailwindcss/discussions/15132) where you will not get any intellisense in v4 unless we add back the old v3 `tailwind.config.js` file to point to the files with tailwind code in them (e.g. html, markdown, javascript files).
+>
+> A simple, quick and minimal way to fix this for the time being, is to create a file located at `.vscode/settings.json` where our `input.css` file is (should be in root if you followed my previous instructions) and configure it like so:
+> ```json
+> {
+>     "tailwindCSS.experimental.configFile": "./input.css"
+> }
+> ```
+>
+> That should fix that issue.
+
+5. Now write your tailwind css in your `index.html`.
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +123,7 @@ fastapi-tailwind-init
 </body>
 </html>
 ```
-6. Run FastAPI and visit your site.
+6. Then run FastAPI and visit your site. It should be gucci. ✨
 ```sh
 fastapi dev main.py
 ```

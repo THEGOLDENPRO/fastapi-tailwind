@@ -16,40 +16,31 @@ MACHINE_TYPE_TO_TAILWIND_TYPE: Dict[str, str] = {
     "armv7l": "armv7"
 }
 
-binaries_path = Path(__file__).parent.joinpath("binaries")
+binary_path = Path(__file__).parent.joinpath("binary")
 
 def get_tailwind_binary_path() -> Optional[Path]:
     path: Optional[Path] = None 
-    cpu_architecture = platform.machine().lower()
-
-    cpu_architecture = MACHINE_TYPE_TO_TAILWIND_TYPE.get(cpu_architecture, cpu_architecture)
-
-    if cpu_architecture == "i386": # tailwind doesn't support i386 to my understanding, correct me if I'm wrong.
-        return None
 
     operating_system: Literal["Windows", "Linux", "Darwin"] | Any = platform.system()
 
-    if operating_system == "Windows":
-        path = binaries_path.joinpath(f"tailwindcss-windows-{cpu_architecture}.exe")
+    for file_path in binary_path.glob("*"):
 
-    elif operating_system == "Darwin":
-        path = binaries_path.joinpath(f"tailwindcss-macos-{cpu_architecture}")
+        if file_path.is_file() and "tailwindcss" in file_path.name:
+            path = file_path
+            break
 
-    elif operating_system == "Linux":
-        path = binaries_path.joinpath(f"tailwindcss-linux-{cpu_architecture}")
+    # TODO: before this step, let's check the binary checksum.
+
+    if path is None:
+        return path
 
     if operating_system == "Linux" or operating_system == "Darwin":
-        # On linux and mac the binary is required to be executable.
+        # On linux and mac the binary is required to be made executable.
+        #path: Path
 
-        if path.exists():
-            is_executable = os.access(path, os.X_OK)
+        is_executable = os.access(path, os.X_OK)
 
-            if not is_executable:
-                Popen(["chmod", "+x", path.absolute()]).wait()
-
-    if not path.exists():
-        raise FileNotFoundError(
-            f"Couldn't find the tailwindcss binary for '{operating_system}'! '{path}' does not exist!"
-        )
+        if not is_executable:
+            Popen(["chmod", "+x", path.absolute()]).wait()
 
     return path

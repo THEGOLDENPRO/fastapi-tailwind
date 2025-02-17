@@ -3,6 +3,7 @@ from typing import Optional, List
 
 import typer
 import shutil
+import logging
 import requests
 from enum import Enum
 from pathlib import Path
@@ -26,7 +27,7 @@ BINARY_CODENAMES = [
     "tailwindcss-windows-x64.exe"
 ]
 
-app = typer.Typer()
+app = typer.Typer(no_args_is_help = True)
 
 class BinType(str, Enum):
     LINUX_ARM64 = "linux-arm64"
@@ -39,8 +40,13 @@ class BinType(str, Enum):
 
     ALL = "all"
 
+logger = logging.getLogger("binary")
+
 bin_stash_folder_path = Path("./binary_stash")
 library_bin_folder_path = Path("./fastapi_tailwind/binary")
+
+logger.setLevel(logging.DEBUG)
+logging.basicConfig(level = logging.INFO)
 
 @app.command()
 def pull(bin_type: BinType, version: Optional[str] = None, force: bool = False):
@@ -60,20 +66,20 @@ def pull(bin_type: BinType, version: Optional[str] = None, force: bool = False):
         destination_path = bin_stash_folder_path.joinpath(f"{bin_codename}-{tag_version}")
 
         if destination_path.exists() and force is False:
-            print(f"'{destination_path.name}' is already pulled, skipping...")
+            logger.debug(f"'{destination_path.name}' is already pulled, skipping...")
             continue
 
         # TODO: move this code
         url = f"https://github.com/{REPO_ID}/releases/download/{tag_version}/{bin_codename}"
 
-        print(f"Requesting download from --> {url}")
+        logger.debug(f"Requesting download from --> {url}")
         request = requests.get(url)
 
         if not request.status_code == 200:
-            print(f"Failed to download tailwind bin from '{url}': {request}")
+            logger.error(f"Failed to download tailwind bin from '{url}': {request}")
             raise typer.Exit(1)
 
-        print(f"Writing --> {destination_path}")
+        logger.debug(f"Writing --> {destination_path}")
 
         if not bin_stash_folder_path.exists():
             bin_stash_folder_path.mkdir()
@@ -81,7 +87,7 @@ def pull(bin_type: BinType, version: Optional[str] = None, force: bool = False):
         with destination_path.open("wb") as file:
             file.write(request.content)
 
-        print(f"Pulled bin successfully!\n")
+        logger.info(f"Pulled '{bin_codename}' bin successfully!\n")
 
 @app.command()
 def select(bin_type: BinType, version: Optional[str] = None):
@@ -98,22 +104,22 @@ def select(bin_type: BinType, version: Optional[str] = None):
         error_msg = f"That tailwind bin ({tailwind_bin_name}) does not exist! " \
             f"Make sure you have pulled it:\n   python scripts/binary pull {bin_type.value}"
 
-        print(error_msg)
+        logger.error(error_msg)
         raise typer.Exit(1)
 
-    print("Cleaning up binary folder...")
+    logger.info("Cleaning up binary folder...")
     for binary_file in library_bin_folder_path.iterdir():
 
         if binary_file.name in [".gitkeep"]:
             continue
 
-        print(f"Removing '{binary_file}'...")
+        logger.debug(f"Removing '{binary_file}'...")
         binary_file.unlink()
 
-    print("\nWriting metadata file...")
+    logger.debug("\nWriting metadata file...")
     write_bin_metadata(library_bin_folder_path, version)
 
-    print(f"Copying tailwindcss bin to {binary_destination_path}...")
+    logger.debug(f"Copying tailwindcss bin to {binary_destination_path}...")
     shutil.copy2(binary_target_path, binary_destination_path)
 
 @app.command()
@@ -122,7 +128,7 @@ def exec(bin_args: Optional[List[str]] = typer.Argument(None)):
     bin_path = get_tailwind_binary_path()
 
     if bin_path is None:
-        print("No binary is selected! Pull and select one.")
+        logger.error("No binary is selected! Pull and select one.")
         raise typer.Exit(1)
 
     args = [

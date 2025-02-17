@@ -32,8 +32,8 @@ jobs:
           ubuntu) OS_NAME="linux" ;;
         esac
 
-        python scripts/binary pull $OS_NAME-x64
-        python scripts/binary select $OS_NAME-x64
+        python scripts/binary.py pull $OS_NAME-x64
+        python scripts/binary.py select $OS_NAME-x64
 
     - name: Run ruff and pytest
       run: |

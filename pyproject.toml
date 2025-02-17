@@ -36,7 +36,8 @@ dev = [
     "build",
     "fastapi[standard]",
     "requests",
-    "typer"
+    "typer",
+    "pytest"
 ]
 
 [project.urls]

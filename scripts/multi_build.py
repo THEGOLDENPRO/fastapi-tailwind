@@ -79,7 +79,7 @@ def multi_build(target_version: Optional[str] = typer.Option(None, "--target-ver
 
     for stashed_bin_path in bin_stash_folder_path.iterdir():
 
-        if not target_version in stashed_bin_path.name:
+        if target_version not in stashed_bin_path.name:
             logger.debug(
                 f"Ignoring '{stashed_bin_path}' as it is not the correct version tag ('{target_version}')..."
             )

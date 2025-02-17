@@ -25,8 +25,15 @@ jobs:
 
     - name: Install tailwind binary
       run: |
-        python scripts/binary pull "${{ fromJson('["' . matrix.os . '"]')[0] }}-x64"
-        python scripts/binary select "${{ fromJson('["' . matrix.os . '"]')[0] }}-x64"
+        OS_NAME="${{ matrix.os }}"
+        OS_NAME="${OS_NAME%-latest}"
+
+        case "$OS_NAME" in
+          ubuntu) OS_NAME="linux" ;;
+        esac
+
+        python scripts/binary pull $OS_NAME-x64
+        python scripts/binary select $OS_NAME-x64
 
     - name: Run ruff and pytest
       run: |

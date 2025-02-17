@@ -53,8 +53,5 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 include = ["fastapi_tailwind*"]
 
-[project.scripts]
-fastapi-tailwind-init = "fastapi_tailwind.__main__:app"
-
 [tool.setuptools.package-data]
-"fastapi_tailwind" = ["binaries/*"]
+"fastapi_tailwind" = ["binary/*"]

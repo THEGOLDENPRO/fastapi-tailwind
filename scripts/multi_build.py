@@ -2,19 +2,19 @@
 # python ./scripts/update_binaries
 
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from typing import Dict, Tuple
 
 import sys
+import typer
 import shutil
 import logging
-import zipfile
 from pathlib import Path
 from subprocess import Popen
 
-from binary import BINARY_CODENAMES
+from binary import bin_stash_folder_path, TAILWIND_VERSION, BinType, select
 
 TAILWIND_PLATFORM_TO_PYPI_PLATFORM: Dict[str, Tuple[str, Dict[str, str]]] = {
     "linux": (
@@ -25,70 +25,85 @@ TAILWIND_PLATFORM_TO_PYPI_PLATFORM: Dict[str, Tuple[str, Dict[str, str]]] = {
             "armv7": "armv7l"
         }
     ),
+    "linux-musl": (
+        "musllinux_1_2",
+        {
+            "x64": "x86_64",
+            "arm64": "aarch64",
+            "armv7": "armv7l"
+        }
+    ),
     "windows": (
         "win", 
         {
-            "x64": "amd64"
+            "x64": "amd64",
         }
     ),
     "macos": (
         "macosx_10_9",
         {
-            "x64": "x86_64"
+            "x64": "x86_64",
+            "arm64": "arm64"
         }
     )
 }
 
+app = typer.Typer()
 logger = logging.getLogger("multi-build")
 
-if __name__ == "__main__":
-    logging.basicConfig(level = logging.DEBUG)
-
-    library_folder_path = Path("./fastapi_tailwind")
-    binaries_folder_path = library_folder_path.joinpath("binaries")
+@app.command()
+def multi_build(target_version: Optional[str] = typer.Option(None, "--target-version", "-v")):
     dist_folder_path = Path("./dist")
-
-    custom_build_folder_path = Path("./custom_build")
-    temp_dist_folder_path = custom_build_folder_path.joinpath("dist")
-    temp_binaries_folder_path = custom_build_folder_path.joinpath("binaries")
-
-    if custom_build_folder_path.exists():
-        shutil.rmtree(custom_build_folder_path)
-
-    custom_build_folder_path.mkdir(exist_ok = True)
-    temp_dist_folder_path.mkdir(exist_ok = True)
     dist_folder_path.mkdir(exist_ok = True)
 
-    if not binaries_folder_path.exists():
+    if target_version is None:
+        target_version = TAILWIND_VERSION
+
+    if not bin_stash_folder_path.exists():
         print(
-            f"The '{binaries_folder_path}' binaries path does not exist! " \
-                "Be sure to run the update_binaries.py script first."
+            f"The '{bin_stash_folder_path}' stash path does not exist! " \
+                "Pull a binary before running a multi build: python scripts/binary.py pull linux-x64"
         )
 
-        exit(1)
+        raise typer.Exit(1)
 
-    shutil.move(binaries_folder_path, temp_binaries_folder_path.parent)
+    build_cache_path = Path("./build")
 
-    for bin_path in list(temp_binaries_folder_path.iterdir()):
+    if build_cache_path.exists():
+        shutil.rmtree(build_cache_path)
 
-        if bin_path.name not in BINARY_CODENAMES:
-            logger.debug(f"Ignoring '{bin_path}' as it is not a tailwind binary...")
+    build_output_path = dist_folder_path.joinpath(target_version)
+
+    if build_output_path.exists():
+        shutil.rmtree(build_output_path)
+
+    for stashed_bin_path in bin_stash_folder_path.iterdir():
+
+        if not target_version in stashed_bin_path.name:
+            logger.debug(
+                f"Ignoring '{stashed_bin_path}' as it is not the correct version tag ('{target_version}')..."
+            )
             continue
 
-        binaries_folder_path.mkdir(exist_ok = True)
-        shutil.move(bin_path, binaries_folder_path)
+        # this should never end up being none hence the strict type
+        bin_type: BinType = None 
 
-        bin_platform = bin_path.stem.split("-")[1]
+        for enum_bin_type in BinType:
 
-        platform_id, cpu_arch_converter = TAILWIND_PLATFORM_TO_PYPI_PLATFORM[bin_platform]
+            if enum_bin_type.value in "-".join(stashed_bin_path.name.split("-")[:-1]):
+                bin_type = enum_bin_type
+                break
 
-        cpu_arch = bin_path.stem.split("-")[-1]
-        cpu_arch = cpu_arch_converter.get(cpu_arch, cpu_arch)
+        assert bin_type is not None
 
-        output_path = temp_dist_folder_path.joinpath(f"{platform_id}_{cpu_arch}")
-        output_path.mkdir()
+        select(bin_type, target_version)
 
-        logger.info(f"Building for '{output_path}'...")
+        os, cpu_arch = bin_type.platform_split()
+
+        platform_tag, tailwind_cpu_arch_to_pypi_cpu_arch = TAILWIND_PLATFORM_TO_PYPI_PLATFORM[os]
+        cpu_arch_tag = tailwind_cpu_arch_to_pypi_cpu_arch[cpu_arch]
+
+        logger.info(f"Building package for '{bin_type}'...")
         popen = Popen(
             [
                 sys.executable,
@@ -96,50 +111,33 @@ if __name__ == "__main__":
                 "build",
                 "--wheel",
                 "--outdir",
-                output_path.absolute()
+                build_output_path.absolute()
             ]
         )
 
         popen.wait()
 
+        built_wheel_path = None
+
+        for wheel_path in build_output_path.iterdir():
+
+            if wheel_path.is_file() and "-any.whl" in wheel_path.name:
+                built_wheel_path = wheel_path
+                break
+
+        assert built_wheel_path is not None
+
+        built_wheel_path.rename(
+            build_output_path.joinpath(
+                built_wheel_path.name.replace("-any.whl", f"-{platform_tag}_{cpu_arch_tag}.whl")
+            )
+        )
+
         logger.debug("Deleting build cache...")
         shutil.rmtree("./build")
 
-        logger.debug(
-            f"Moving binary '{bin_path.name}' back to temp binaries folder '{temp_binaries_folder_path}'..."
-        )
-        shutil.move(
-            binaries_folder_path.joinpath(bin_path.name), temp_binaries_folder_path
-        )
+if __name__ == "__main__":
+    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(level = logging.INFO)
 
-    logger.debug("Moving back all binaries...")
-    binaries_folder_path.rmdir()
-    shutil.move(temp_binaries_folder_path, binaries_folder_path)
-
-    logger.debug("Renaming and moving all wheels to dist...")
-    for platform_dist_path in temp_dist_folder_path.iterdir():
-        wheel_file_path = next(platform_dist_path.iterdir())
-
-        new_name = f"{wheel_file_path.stem.replace('-any', f'-{platform_dist_path.stem}')}.whl"
-
-        wheel_file_path = wheel_file_path.rename(platform_dist_path.joinpath(new_name))
-
-        shutil.move(wheel_file_path, dist_folder_path)
-
-    logger.debug("Duplicating manylinux wheels to make musllinux wheels...")
-
-    for wheel_path in dist_folder_path.iterdir():
-
-        if not "manylinux2014" in wheel_path.stem:
-            continue
-
-        new_name = f"{wheel_path.stem.replace('-manylinux2014', '-musllinux_1_2')}.whl"
-
-        new_wheel_path = dist_folder_path.joinpath(new_name)
-
-        print(">>", new_wheel_path)
-
-        shutil.copy(wheel_path, new_wheel_path)
-
-        with zipfile.ZipFile(new_wheel_path, mode = "a") as archive:
-            archive.writestr("owo.txt", f"Ignore me pwease. ({new_name})")
+    app()

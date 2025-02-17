@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 import typer
 import shutil
@@ -38,15 +38,19 @@ class BinType(str, Enum):
     MACOS_X64 = "macos-x64"
     WINDOWS_X64 = "windows-x64"
 
-    ALL = "all"
+    def platform_split(self) -> Tuple[str, str]:
+        os, cpu_arch = self.value.split("-", 1)
+
+        if "-musl" in cpu_arch:
+            os += "-musl"
+            cpu_arch = cpu_arch.replace("-musl", "")
+
+        return (os, cpu_arch)
 
 logger = logging.getLogger("binary")
 
 bin_stash_folder_path = Path("./binary_stash")
 library_bin_folder_path = Path("./fastapi_tailwind/binary")
-
-logger.setLevel(logging.DEBUG)
-logging.basicConfig(level = logging.INFO)
 
 @app.command()
 def pull(bin_type: BinType, version: Optional[str] = None, force: bool = False):
@@ -142,4 +146,7 @@ def exec(bin_args: Optional[List[str]] = typer.Argument(None)):
     popen.wait()
 
 if __name__ == "__main__":
+    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(level = logging.INFO)
+
     app()

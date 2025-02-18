@@ -16,6 +16,7 @@
 > Currently in alpha phase so expect bugs but do report them please. 🙏
 
 ## Features ✨
+- [x] Zero dependencies 🪶
 - [x] Auto watch when in dev mode. 🔎
 - [x] Doesn't require NodeJS and NPM. 🫧🪥
 - [x] Seemless integration into the FastAPI codebase. 🥂

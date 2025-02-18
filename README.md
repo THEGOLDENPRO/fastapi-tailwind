@@ -65,7 +65,10 @@ static_files = StaticFiles(directory = "static")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # YAY, our tailwind get's compiled here! 😄
-    process = tailwind.compile(static_files.directory + "/output.css")
+    process = tailwind.compile(
+        static_files.directory + "/output.css",
+        tailwind_stylesheet_path = "./input.css"
+    )
 
     yield # The code after this is called on shutdown.
 

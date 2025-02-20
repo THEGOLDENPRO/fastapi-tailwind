@@ -12,7 +12,7 @@ from fastapi_tailwind.binary import get_tailwind_binary_path
 
 from utils import write_bin_metadata, bin_name_generator
 
-TAILWIND_VERSION = "4.0.3"
+TAILWIND_VERSION = "4.0.7"
 REPO_ID = "tailwindlabs/tailwindcss"
 
 # TODO: use this to implement "pull all".

@@ -7,9 +7,7 @@ from typing import TYPE_CHECKING, Optional
 if TYPE_CHECKING:
     from typing import Dict, Tuple, List
 
-import os
 import sys
-import time
 import typer
 import shutil
 import logging

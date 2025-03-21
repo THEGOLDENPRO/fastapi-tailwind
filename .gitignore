@@ -6,3 +6,7 @@ output.css
 dist
 .ruff_cache
 custom_build
+binary/
+binaries/
+!binaries/info.txt
+binary_stash/
